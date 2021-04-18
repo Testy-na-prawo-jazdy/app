@@ -1,0 +1,12 @@
+{
+  "name": "driving-test",
+  "displayName": "driving-test",
+  "expo": {
+    "name": "driving-test",
+    "slug": "driving-test",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
