@@ -1,11 +1,14 @@
 import React from 'react';
-import {StyleSheet, View, Image, TouchableOpacity, Text, TextInput, CheckBox} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity, Text, TextInput, CheckBox, Modal} from 'react-native';
 import {Link} from "react-router-native";
+import {rgbaColor} from "react-native-reanimated/src/reanimated2/Colors";
 
 export default function Login() {
     const [login, onChangeLogin] = React.useState("");
     const [password, onChangePassword] = React.useState("");
+    const [email, onChangeEmail] = React.useState("");
     const [isSelected, setSelection] = React.useState(false);
+    const [modalVisible, setModalVisible] = React.useState(false);
 
     return (
         <View style={styles.container}>
@@ -37,15 +40,12 @@ export default function Login() {
                     />
                     <Text style={styles.label}>Zapamiętaj mnie</Text>
                 </View>
-                <Text style={styles.label}>Nie pamiętasz hasła?</Text>
+                <Text style={styles.label} onPress={() => setModalVisible(true)}>Nie pamiętasz hasła?</Text>
             </View>
             <View style={styles.buttonBox}>
-                <TouchableOpacity
-                    style={styles.button}
-                    // onPress={onPressLearnMore}
-                >
+                <Link to="/" style={styles.button}>
                     <Text>Zaloguj</Text>
-                </TouchableOpacity>
+                </Link>
                 <Link to="/register" style={styles.button}>
                     <Text>Zarejestruj</Text>
                 </Link>
@@ -56,6 +56,29 @@ export default function Login() {
                     <Text>Zaloguj jako gość</Text>
                 </TouchableOpacity>
             </View>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text>Przypomnij hasło</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={onChangeEmail}
+                            value={email}
+                            placeholder={"Email"}
+                        />
+                        <Link to="/" style={styles.button} onPress={() => setModalVisible(false)}>
+                            <Text>Przypomnij</Text>
+                        </Link>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -86,7 +109,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: '#404040',
     },
-    checkboxBox:{
+    checkboxBox: {
         display: 'flex',
         flexDirection: "row",
         justifyContent: 'space-between',
@@ -121,5 +144,26 @@ const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 20,
         marginTop: 50,
-    }
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: rgbaColor(0,0,0, 0.5),
+    },
+    modalView: {
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+        elevation: 5,
+        width: '80%'
+    },
 });
