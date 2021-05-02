@@ -1,7 +1,9 @@
 import React from 'react';
-import {StyleSheet, View, Image, TouchableOpacity, Text, TextInput, CheckBox, Modal} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity, Text, TextInput, CheckBox, Modal, AsyncStorage} from 'react-native';
 import {Link} from "react-router-native";
+import { useHistory } from "react-router-dom";
 import {rgbaColor} from "react-native-reanimated/src/reanimated2/Colors";
+import {userLogin} from "../helpers/RestQueries";
 
 export default function Login() {
     const [login, onChangeLogin] = React.useState("");
@@ -9,6 +11,7 @@ export default function Login() {
     const [email, onChangeEmail] = React.useState("");
     const [isSelected, setSelection] = React.useState(false);
     const [modalVisible, setModalVisible] = React.useState(false);
+    const history = useHistory();
 
     return (
         <View style={styles.container}>
@@ -35,7 +38,7 @@ export default function Login() {
                 <View style={styles.checkboxContainer}>
                     <CheckBox
                         value={isSelected}
-                        onValueChange={setSelection}
+                        onValueChange={() => {setSelection(!isSelected); AsyncStorage.setItem('remember', isSelected ? 'true' : 'false')}}
                         style={styles.checkbox}
                     />
                     <Text style={styles.label}>Zapamiętaj mnie</Text>
@@ -43,15 +46,19 @@ export default function Login() {
                 <Text style={styles.label} onPress={() => setModalVisible(true)}>Nie pamiętasz hasła?</Text>
             </View>
             <View style={styles.buttonBox}>
-                <Link to="/" style={styles.button}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {userLogin(login, password, history)}}
+                >
                     <Text>Zaloguj</Text>
-                </Link>
+                </TouchableOpacity>
                 <Link to="/register" style={styles.button}>
                     <Text>Zarejestruj</Text>
                 </Link>
 
                 <TouchableOpacity
                     style={styles.buttonGuest}
+                    onPress={() =>{AsyncStorage.setItem('logIn', 'TemporaryUser'); history.push('/')}}
                 >
                     <Text>Zaloguj jako gość</Text>
                 </TouchableOpacity>

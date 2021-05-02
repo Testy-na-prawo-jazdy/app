@@ -3,12 +3,12 @@ import {StyleSheet, View, Image, TouchableOpacity, Text, TextInput, CheckBox, Mo
 import NavBar from "../components/NavBar";
 
 
-export default function Home() {
+export default function Profile() {
     return (
         <View style={styles.container}>
-            <NavBar title={"Dashboard"}/>
+            <NavBar title={"Mój profil"}/>
             <View>
-                <Text style={styles.text}>Witaj</Text>
+                <Text style={styles.text}>Mój profil</Text>
             </View>
         </View>
     )

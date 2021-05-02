@@ -2,9 +2,13 @@ import React from 'react';
 import {StyleSheet, View, Image, TouchableOpacity, Text, TextInput, CheckBox} from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 import Modal from 'react-native-modal';
+import {checkUserSignedIn, userLogOut} from "../helpers/RestQueries";
+import {Redirect} from "react-router-native";
+import {useHistory} from "react-router-dom";
 
 export default function NavBar({title}) {
     const [slider, setSlider] = React.useState(false)
+    const history = useHistory();
 
     const toggleModal = () => {
         setSlider(!slider);
@@ -29,11 +33,12 @@ export default function NavBar({title}) {
                     <View style={styles.sliderContent}>
                         <Icon name="chevron-left" style={styles.iconSlider} size={30} color={"#ffffff"}
                               onPress={() => toggleModal()}/>
-                        <Text style={styles.menuLabel}>Dashboard</Text>
-                        <Text style={styles.menuLabel}>Statystyki</Text>
-                        <Text style={styles.menuLabel}>Historia</Text>
-                        <Text style={styles.menuLabel}>Mój profil</Text>
-                        <Text style={styles.menuLabel}>Regulamin</Text>
+                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/')}}>Dashboard</Text>
+                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/stats')}}>Statystyki</Text>
+                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/history')}}>Historia</Text>
+                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/profile')}}>Mój profil</Text>
+                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/privacyPolicy')}}>Regulamin</Text>
+                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/login')}}>Logout</Text>
                     </View>
                 </View>
             </Modal>
