@@ -33,12 +33,12 @@ export default function NavBar({title}) {
                     <View style={styles.sliderContent}>
                         <Icon name="chevron-left" style={styles.iconSlider} size={30} color={"#ffffff"}
                               onPress={() => toggleModal()}/>
-                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/')}}>Dashboard</Text>
-                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/stats')}}>Statystyki</Text>
-                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/history')}}>Historia</Text>
-                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/profile')}}>Mój profil</Text>
-                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/privacyPolicy')}}>Regulamin</Text>
-                        <Text style={styles.menuLabel} onPress={() => {userLogOut(); history.push('/login')}}>Logout</Text>
+                        <Text style={styles.menuLabel} onPress={() => {history.push('/')}}>Dashboard</Text>
+                        <Text style={styles.menuLabel} onPress={() => {history.push('/stats')}}>Statystyki</Text>
+                        <Text style={styles.menuLabel} onPress={() => {history.push('/history')}}>Historia</Text>
+                        <Text style={styles.menuLabel} onPress={() => {history.push('/profile')}}>Mój profil</Text>
+                        <Text style={styles.menuLabel} onPress={() => {history.push('/privacyPolicy')}}>Regulamin</Text>
+                        <Text style={styles.menuLabel} onPress={() => {userLogOut().then(() => history.push('/login'))}}>Logout</Text>
                     </View>
                 </View>
             </Modal>

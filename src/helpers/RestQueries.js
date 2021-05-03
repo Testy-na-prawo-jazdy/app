@@ -1,6 +1,6 @@
 import {AsyncStorage} from "react-native";
 
-export const  userLogin = (login, password, history) => {
+export const userLogin = (login, password, history) => {
     if (login && password) {
         fetch("https://testy-na-prawo-jazdy.herokuapp.com/auth/login", {
             method: "POST",
@@ -15,9 +15,9 @@ export const  userLogin = (login, password, history) => {
         })
             .then((response) => response.json())
             .then((responseData) => {
-                if(responseData.errorCode){
+                if (responseData.errorCode) {
                     console.log(responseData)
-                }else{
+                } else {
                     AsyncStorage.setItem('logIn', login)
                     AsyncStorage.setItem('token', responseData.token)
                     AsyncStorage.setItem('refreshToken', responseData.refreshToken)
@@ -28,7 +28,7 @@ export const  userLogin = (login, password, history) => {
     }
 }
 
-export const  userRegister = (login, password, email, history) => {
+export const userRegister = (login, password, email, history) => {
     if (login && password && email) {
         fetch("https://testy-na-prawo-jazdy.herokuapp.com/auth/register", {
             method: "POST",
@@ -44,9 +44,9 @@ export const  userRegister = (login, password, email, history) => {
         })
             .then((response) => response.json())
             .then((responseData) => {
-                if(responseData.errorCode){
+                if (responseData.errorCode) {
                     console.log(responseData)
-                }else{
+                } else {
                     history.push('/login')
                 }
             })
@@ -54,9 +54,9 @@ export const  userRegister = (login, password, email, history) => {
     }
 }
 
-export const refreshToken = async() =>{
-    let token = await AsyncStorage.getItem('refreshToken')
-    if(token){
+export const refreshToken = async () => {
+    let refreshToken = await AsyncStorage.getItem('refreshToken')
+    if (refreshToken) {
         fetch("https://testy-na-prawo-jazdy.herokuapp.com/auth/token/refresh", {
             method: "POST",
             headers: {
@@ -64,14 +64,14 @@ export const refreshToken = async() =>{
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                refreshToken: token
+                refreshToken: refreshToken
             })
         })
             .then((response) => response.json())
             .then((responseData) => {
-                if(responseData.errorCode){
+                if (responseData.errorCode) {
 
-                }else{
+                } else {
                     AsyncStorage.setItem('token', responseData.token)
                 }
             })
@@ -80,10 +80,28 @@ export const refreshToken = async() =>{
 
 }
 
-export const userLogOut = () => {
-    AsyncStorage.removeItem('logIn')
-    AsyncStorage.removeItem('token')
-    AsyncStorage.removeItem('refreshToken')
+export const userLogOut = async () => {
+    let refreshToken = await AsyncStorage.getItem('refreshToken')
+    if (refreshToken) {
+        fetch("https://testy-na-prawo-jazdy.herokuapp.com/auth/logout", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                refreshToken: refreshToken
+            })
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                console.log(responseData)
+                AsyncStorage.removeItem('logIn')
+                AsyncStorage.removeItem('token')
+                AsyncStorage.removeItem('refreshToken')
+            })
+            .done()
+    }
 }
 
 
@@ -100,4 +118,64 @@ export const checkUserSignedIn = async () => {
         console.error('Login error')
         return false;
     }
+}
+
+export const primaryTask = async (category, history) =>{
+    let token = await AsyncStorage.getItem('token')
+    if(token){
+        fetch("https://testy-na-prawo-jazdy.herokuapp.com/learn/primaryTask/start/" + category, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                history.push('/test', {test: responseData})
+            })
+            .done()
+    }
+
+}
+
+export const specialistTask = async (category, history) =>{
+    let token = await AsyncStorage.getItem('token')
+    if(token){
+        fetch("https://testy-na-prawo-jazdy.herokuapp.com/learn/specialistTask/start/" + category, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                history.push('/test', {test: responseData})
+            })
+            .done()
+    }
+
+}
+
+export const fullTest = async (category, history) =>{
+    let token = await AsyncStorage.getItem('token')
+    if(token){
+        fetch("https://testy-na-prawo-jazdy.herokuapp.com/exam/start/" + category, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                history.push('/test', {test: responseData})
+            })
+            .done()
+    }
+
 }

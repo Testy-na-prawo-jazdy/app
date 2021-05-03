@@ -9,6 +9,7 @@ import PrivacyPolicy from "./src/pages/PrivacyPolicy";
 import History from "./src/pages/History";
 import Stats from "./src/pages/Stats";
 import Profile from "./src/pages/Profile";
+import Test from "./src/pages/Test";
 
 export default function App() {
     const [isAuthenticated, setAuthentication]  = React.useState(true)
@@ -27,6 +28,7 @@ export default function App() {
                 <Route exact path="/history" component={History}/>
                 <Route exact path="/stats" component={Stats}/>
                 <Route exact path="/profile" component={Profile}/>
+                <Route exact path="/test" component={Test}/>
             </View>
             {!isAuthenticated  && (<Redirect to={{pathname: '/login'}}/>)}
         </NativeRouter>

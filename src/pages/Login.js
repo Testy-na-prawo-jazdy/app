@@ -80,9 +80,9 @@ export default function Login() {
                             value={email}
                             placeholder={"Email"}
                         />
-                        <Link to="/" style={styles.button} onPress={() => setModalVisible(false)}>
+                        <TouchableOpacity style={styles.button} onPress={() => setModalVisible(false)}>
                             <Text>Przypomnij</Text>
-                        </Link>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </Modal>
