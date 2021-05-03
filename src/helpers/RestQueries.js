@@ -28,6 +28,32 @@ export const  userLogin = (login, password, history) => {
     }
 }
 
+export const  userRegister = (login, password, email, history) => {
+    if (login && password && email) {
+        fetch("https://testy-na-prawo-jazdy.herokuapp.com/auth/register", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: login,
+                password: password,
+                email: email,
+            })
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                if(responseData.errorCode){
+                    console.log(responseData)
+                }else{
+                    history.push('/login')
+                }
+            })
+            .done()
+    }
+}
+
 export const refreshToken = async() =>{
     let token = await AsyncStorage.getItem('refreshToken')
     if(token){
