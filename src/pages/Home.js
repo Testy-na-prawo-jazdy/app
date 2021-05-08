@@ -18,16 +18,16 @@ export default function Home() {
             <ScrollView style={styles.categoriesContainer} horizontal={true}>
                 {categories.map((category) => {
                     if(category === selectedCategory ){
-                        return <TouchableOpacity style={styles.categoriesSelected}><Text>{category}</Text></TouchableOpacity>
+                        return <TouchableOpacity key={category} style={styles.categoriesSelected}><Text>{category}</Text></TouchableOpacity>
                     }else{
-                        return <TouchableOpacity style={styles.categories} onPress={() => setCategory(category)}><Text>{category}</Text></TouchableOpacity>
+                        return <TouchableOpacity key={category} style={styles.categories} onPress={() => setCategory(category)}><Text>{category}</Text></TouchableOpacity>
                     }
                 })}
             </ScrollView>
             <Text style={[styles.text, {marginTop: 30}]}>Rozpocznij test</Text>
             <View style={{marginTop: 20}}>
                 <TouchableOpacity style={styles.mainButton} onPress={() => fullTest(selectedCategory, history)}><FontAwesomeIcon icon={ faPlay } style={styles.iconMain} size={ 42 }/></TouchableOpacity>
-                <TouchableOpacity style={styles.modalButton}><FontAwesomeIcon icon={ faCogs } size={ 26 }/></TouchableOpacity>
+                {/*<TouchableOpacity style={styles.modalButton}><FontAwesomeIcon icon={ faCogs } size={ 26 }/></TouchableOpacity>*/}
             </View>
             <Text style={[styles.text, {marginTop: 70}]}>Szybke pytanie</Text>
             <View style={styles.fastTest}>

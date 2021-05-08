@@ -1,69 +1,51 @@
 import React, {useEffect} from 'react';
-import {
-    StyleSheet,
-    View,
-    Image,
-    TouchableOpacity,
-    Text,
-    TextInput,
-    CheckBox,
-    Modal,
-    AsyncStorage,
-    Button,
-} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity, Text,} from 'react-native';
 import {ProgressBar, Colors} from 'react-native-paper';
-import {Video, AVPlaybackStatus} from 'expo-av';
+import {Video} from 'expo-av';
 import NavBar from "../components/NavBar";
 import {Dimensions} from 'react-native';
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {checkUserSignedIn, completeTest} from "../helpers/RestQueries";
+import {completeTest} from "../helpers/RestQueries";
 import {useHistory} from "react-router-dom";
-
 const win = Dimensions.get('window');
-
 
 export default function Test(data) {
     const exam = data.location.state.test
     const category = data.location.state.category
     const type = exam.examId
-
     const history = useHistory();
-
     const video = React.useRef(null);
     const [status, setStatus] = React.useState({});
-    const [time, setTime] = React.useState(0);
+    const [progress, setProgress] = React.useState(35);
     const [index, setIndex] = React.useState(0);
     const [primaryTaskList, setPrimaryTaskList] = React.useState([]);
     const [specialistTaskList, setSpecialistTaskList] = React.useState([]);
+    let timeout = undefined;
 
     if (type) {
         let standard = exam.primaryTaskList
         let specialist = exam.specialistTaskList
-        let startTime = 35;
-
 
         if(index === (specialist.length + standard.length)){
             completeTest(exam.examId, primaryTaskList, specialistTaskList, history);
         }
 
-        // useEffect(() => {
-        //     setTime(startTime)
-        //     console.log('asdasdasd')
-        // });
-
-        // setInterval(function (){
-        //     if(time > 0){
-        //         setTime(time - 1)
-        //         console.log(time)
-        //     }
-        // }, 1000)
+        useEffect(() => {
+            if(progress > 0){
+                timeout = setTimeout(() => setProgress(progress - 1), 1000)
+            }else{
+                setIndex(index + 1)
+                clearTimeout(timeout);
+                setProgress(35)
+            }
+        }, [progress]);
 
         return (
             <View style={styles.container}>
                 <NavBar title={'Test'}/>
                 <View>
-                    <ProgressBar progress={time / 35} color={Colors.red800}/>
+                    <ProgressBar progress={progress/35} color={Colors.red800}/>
                     {index < standard.length &&
                     <View>
                         {standard[index].primaryTask.filename.includes('.jpg') ?
@@ -102,6 +84,8 @@ export default function Test(data) {
                                         id: standard[index].id,
                                         chosenAnswer: true
                                     }])
+                                    clearTimeout(timeout);
+                                    setProgress(35)
                                     status.isPlaying && video.current.pauseAsync();
                                     setIndex(index + 1)
                                 }}><Text>Tak</Text></TouchableOpacity>
@@ -110,6 +94,8 @@ export default function Test(data) {
                                         id: standard[index].id,
                                         chosenAnswer: false
                                     }])
+                                    clearTimeout(timeout);
+                                    setProgress(35)
                                     status.isPlaying && video.current.pauseAsync();
                                     setIndex(index + 1)
                                 }}><Text>Nie</Text></TouchableOpacity>
@@ -156,6 +142,8 @@ export default function Test(data) {
                                         id: specialist[index - standard.length].id,
                                         chosenAnswer: 'A'
                                     }])
+                                    clearTimeout(timeout);
+                                    setProgress(35)
                                     status.isPlaying && video.current.pauseAsync();
                                     setIndex(index + 1)
                                 }}><Text>{specialist[index - standard.length].specialistTask.answerA}</Text></TouchableOpacity>
@@ -164,6 +152,8 @@ export default function Test(data) {
                                         id: specialist[index - standard.length].id,
                                         chosenAnswer: 'B'
                                     }])
+                                    clearTimeout(timeout);
+                                    setProgress(35)
                                     status.isPlaying && video.current.pauseAsync();
                                     setIndex(index + 1)
                                 }}><Text>{specialist[index - standard.length].specialistTask.answerB}</Text></TouchableOpacity>
@@ -172,6 +162,8 @@ export default function Test(data) {
                                         id: specialist[index - standard.length].id,
                                         chosenAnswer: 'C'
                                     }])
+                                    clearTimeout(timeout);
+                                    setProgress(35)
                                     status.isPlaying && video.current.pauseAsync();
                                     setIndex(index + 1)
                                 }}><Text>{specialist[index - standard.length].specialistTask.answerC}</Text></TouchableOpacity>
