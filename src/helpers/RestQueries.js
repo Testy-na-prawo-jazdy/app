@@ -76,6 +76,7 @@ export const refreshToken = async () => {
 
                 } else {
                     AsyncStorage.setItem('token', responseData.token)
+                    AsyncStorage.setItem('createdAt', new Date().toISOString())
                 }
             })
             .done()
@@ -225,3 +226,47 @@ export const completeTest = async (id, primaryTaskList, specialistTaskList, hist
             .done()
     }
 }
+
+
+export const getHistory = async () => {
+    let time = new Date(await AsyncStorage.getItem('createdAt'))
+    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+        await refreshToken()
+    }
+    let token = await AsyncStorage.getItem('token')
+    if (token) {
+        let response = await fetch("https://testy-na-prawo-jazdy.herokuapp.com/exam/history", {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        });
+        return await response.json();
+    }
+}
+
+export const getHistoryById = async (id, history) => {
+    let time = new Date(await AsyncStorage.getItem('createdAt'))
+    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+        await refreshToken()
+    }
+    let token = await AsyncStorage.getItem('token')
+    if (token) {
+        fetch("https://testy-na-prawo-jazdy.herokuapp.com/exam/result/" + id, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                history.push('/result', {results: responseData})
+            })
+            .done()
+    }
+}
+

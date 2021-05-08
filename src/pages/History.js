@@ -1,15 +1,29 @@
-import React from 'react';
-import {StyleSheet, View, Image, TouchableOpacity, Text, TextInput, CheckBox, Modal, AsyncStorage} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import NavBar from "../components/NavBar";
+import HistoryListItem from "../components/HistoryListItem";
+import {checkUserSignedIn, getHistory} from "../helpers/RestQueries";
 
 
 export default function History() {
+    const [userHistory, setUserHistory] = React.useState([])
+
+    useEffect(() => {
+        getHistory().then((response) => {
+            setUserHistory(response)
+        })
+    }, []);
+
     return (
         <View style={styles.container}>
             <NavBar title={"Historia"}/>
-            <View>
-                <Text style={styles.text}>Historia</Text>
-            </View>
+            <ScrollView style={{marginTop: 30}}>
+                {
+                    userHistory.map((item) => {
+                        return <HistoryListItem key={item.examId} data={item}/>
+                    })
+                }
+            </ScrollView>
         </View>
     )
 }
@@ -19,7 +33,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
     },
-    text:{
+    text: {
         fontSize: 22
     }
 });
