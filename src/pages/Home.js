@@ -24,11 +24,12 @@ export default function Home() {
                     }
                 })}
             </ScrollView>
-            <View style={{marginTop: 50}}>
+            <Text style={[styles.text, {marginTop: 30}]}>Rozpocznij test</Text>
+            <View style={{marginTop: 20}}>
                 <TouchableOpacity style={styles.mainButton} onPress={() => fullTest(selectedCategory, history)}><FontAwesomeIcon icon={ faPlay } style={styles.iconMain} size={ 42 }/></TouchableOpacity>
                 <TouchableOpacity style={styles.modalButton}><FontAwesomeIcon icon={ faCogs } size={ 26 }/></TouchableOpacity>
             </View>
-            <Text style={[styles.text, {marginTop: 70}]}>Szybki test</Text>
+            <Text style={[styles.text, {marginTop: 70}]}>Szybke pytanie</Text>
             <View style={styles.fastTest}>
                 <TouchableOpacity style={styles.primaryTask} onPress={() => primaryTask(selectedCategory, history)}><Text>Pytanie podstawowe</Text></TouchableOpacity>
                 <TouchableOpacity style={styles.specialistTask} onPress={() => specialistTask(selectedCategory, history)}><Text>Pytanie specjalistyczne</Text></TouchableOpacity>

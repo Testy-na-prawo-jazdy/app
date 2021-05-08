@@ -1,6 +1,6 @@
 {
   "name": "driving-test",
-  "displayName": "driving-test",
+  "displayName": "Drive Test",
   "expo": {
     "name": "driving-test",
     "slug": "driving-test",
@@ -11,6 +11,12 @@
     "splash": {
       "image": "./src/assets/images/splash.png",
       "backgroundColor": "#FFFFFF"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/logo-fav.png",
+        "backgroundColor": "#FFF"
+      }
     },
     "orientation": "portrait"
   }
