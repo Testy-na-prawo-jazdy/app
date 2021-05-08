@@ -1,6 +1,15 @@
 import React from 'react';
-import {StyleSheet, View, Image, TouchableOpacity, Text, TextInput, ToastAndroid} from 'react-native';
-import {Link} from "react-router-native";
+import {
+    StyleSheet,
+    View,
+    Image,
+    TouchableOpacity,
+    Text,
+    TextInput,
+    ToastAndroid,
+    TouchableWithoutFeedback,
+    Keyboard, ScrollView, KeyboardAvoidingView
+} from 'react-native';
 import {userRegister} from "../helpers/RestQueries";
 import {useHistory} from "react-router-dom";
 
@@ -16,57 +25,64 @@ export default function Register() {
         return expression.test(String(email).toLowerCase())
     }
 
-    const formValidation = () =>{
-        if(login !== '' && email !== '' && isEmailValid(email) && password !== '' && password === repeatPassword){
+    const formValidation = () => {
+        if (login !== '' && email !== '' && isEmailValid(email) && password !== '' && password === repeatPassword) {
             ToastAndroid.show("Zarejestrowano!", ToastAndroid.SHORT)
             return true;
-        }else{
+        } else {
             ToastAndroid.show("Niepoprawne dane!", ToastAndroid.SHORT)
             return false;
         }
     }
 
     return (
-        <View style={styles.container}>
-            <Image
-                style={styles.logo}
-                resizeMode={"contain"}
-                source={require('../assets/images/logo.png')}
-            />
-            <Text style={styles.textHeader}>Zarejestruj się</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={onChangeLogin}
-                value={login}
-                placeholder={"Login"}
-            />
-            <TextInput
-                style={styles.input}
-                onChangeText={onChangeEmail}
-                value={email}
-                placeholder={"Email"}
-                autoCompleteType={"email"}
-            />
-            <TextInput
-                style={styles.input}
-                onChangeText={onChangePassword}
-                secureTextEntry={true}
-                value={password}
-                placeholder={"Hasło"}
-            />
-            <TextInput
-                style={styles.input}
-                onChangeText={onChangeRepeatPassword}
-                secureTextEntry={true}
-                value={repeatPassword}
-                placeholder={"Powtórz hasło"}
-            />
-            <View style={styles.buttonBox}>
-                <TouchableOpacity style={styles.button} onPress={() => {formValidation() && userRegister(login, password, email, history)}}>
-                    <Text>Zarejestruj</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+                <View style={styles.container}>
+                    <Image
+                        style={styles.logo}
+                        resizeMode={"contain"}
+                        source={require('../assets/images/logo.png')}
+                    />
+                    <Text style={styles.textHeader}>Zarejestruj się</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeLogin}
+                        value={login}
+                        placeholder={"Login"}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeEmail}
+                        value={email}
+                        placeholder={"Email"}
+                        autoCompleteType={"email"}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangePassword}
+                        secureTextEntry={true}
+                        value={password}
+                        placeholder={"Hasło"}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={onChangeRepeatPassword}
+                        secureTextEntry={true}
+                        value={repeatPassword}
+                        placeholder={"Powtórz hasło"}
+                    />
+                    <View style={styles.buttonBox}>
+                        <TouchableOpacity style={styles.button} onPress={() => {
+                            formValidation() && userRegister(login, password, email, history)
+                        }}>
+                            <Text>Zarejestruj</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.returnButton} onPress={() => {
+                            history.push('/login')
+                        }}>
+                            <Text>Wróć</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
     );
 }
 
@@ -96,12 +112,20 @@ const styles = StyleSheet.create({
         fontSize: 22,
     },
     buttonBox: {
-        marginTop: 50,
+        marginTop: 20,
         width: '100%',
         alignItems: 'center',
     },
     button: {
         backgroundColor: "#ff8906",
+        width: '80%',
+        alignItems: "center",
+        padding: 15,
+        borderRadius: 20,
+        marginTop: 10,
+    },
+    returnButton: {
+        backgroundColor: "#dddddd",
         width: '80%',
         alignItems: "center",
         padding: 15,

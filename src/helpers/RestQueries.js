@@ -57,12 +57,13 @@ export const userRegister = (login, password, email, history) => {
 
 export const refreshToken = async () => {
     let refreshToken = await AsyncStorage.getItem('refreshToken')
+
     if (refreshToken) {
         fetch("https://testy-na-prawo-jazdy.herokuapp.com/auth/token/refresh", {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 refreshToken: refreshToken
@@ -70,6 +71,7 @@ export const refreshToken = async () => {
         })
             .then((response) => response.json())
             .then((responseData) => {
+                console.log(responseData)
                 if (responseData.errorCode) {
 
                 } else {
@@ -126,7 +128,7 @@ export const checkUserSignedIn = async () => {
 
 export const primaryTask = async (category, history) =>{
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() < new Date(time.setMinutes(time.getMinutes()+30))){
+    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
@@ -150,7 +152,7 @@ export const primaryTask = async (category, history) =>{
 
 export const specialistTask = async (category, history) =>{
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() < new Date(time.setMinutes(time.getMinutes()+30))){
+    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
@@ -174,7 +176,7 @@ export const specialistTask = async (category, history) =>{
 
 export const fullTest = async (category, history) =>{
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() < new Date(time.setMinutes(time.getMinutes()+30))){
+    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
@@ -198,7 +200,7 @@ export const fullTest = async (category, history) =>{
 
 export const completeTest = async (id, primaryTaskList, specialistTaskList, history) => {
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() < new Date(time.setMinutes(time.getMinutes()+30))){
+    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')

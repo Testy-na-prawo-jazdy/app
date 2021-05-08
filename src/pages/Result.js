@@ -18,6 +18,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import ProgressCircle from 'react-native-progress-circle'
 import {checkUserSignedIn} from "../helpers/RestQueries";
+import {useHistory} from "react-router-dom";
 
 const win = Dimensions.get('window');
 
@@ -29,6 +30,7 @@ export default function Result(data) {
     const video = React.useRef(null);
     const [status, setStatus] = React.useState({});
     const [points, setPoints] = React.useState(0);
+    const history = useHistory();
 
     useEffect(() => {
         var pointsCounter = 0;
@@ -98,6 +100,11 @@ export default function Result(data) {
 
                 })
                 }
+                <TouchableOpacity style={styles.returnButton} onPress={() => {
+                    history.push('/')
+                }}>
+                    <Text>Wróć</Text>
+                </TouchableOpacity>
             </View>
             <Modal
                 animationType="fade"
@@ -107,7 +114,6 @@ export default function Result(data) {
                     setModalVisible(!modalVisible);
                 }}
             >
-                {console.log(selectedAnswer)}
                 <View style={styles.modal}>
                     <View style={styles.modalBar}>
                         <Icon name="chevron-left" style={styles.icon} size={30}
@@ -145,7 +151,11 @@ export default function Result(data) {
                         <View style={styles.testContainer}>
                             <Text style={styles.question}>{selectedAnswer.primaryTask.question}</Text>
                             <View style={styles.answersSpec}>
-                                <View style={[styles.specAnswer, selectedAnswer.primaryTask.correctAnswer && styles.correct]}><Text>Tak</Text></View>
+                                <View style={[
+                                    styles.specAnswer,
+                                    selectedAnswer.primaryTask.correctAnswer && styles.correct,
+                                    !selectedAnswer.primaryTask.correctAnswer && selectedAnswer.selectedAnswer && styles.selectedAnswer,
+                                ]}><Text>Tak</Text></View>
                                 <View style={[styles.specAnswer, !selectedAnswer.primaryTask.correctAnswer && styles.correct]}><Text>Nie</Text></View>
                             </View>
                         </View>
@@ -182,9 +192,21 @@ export default function Result(data) {
                         <View style={styles.testContainer}>
                             <Text style={styles.question}>{selectedAnswer.specialistTask.question}</Text>
                             <View style={styles.answersSpec}>
-                                <View style={[styles.specAnswer, selectedAnswer.specialistTask.correctAnswer === 'A' && styles.correct]}><Text>{selectedAnswer.specialistTask.answerA}</Text></View>
-                                <View style={[styles.specAnswer, selectedAnswer.specialistTask.correctAnswer === 'B' && styles.correct]}><Text>{selectedAnswer.specialistTask.answerB}</Text></View>
-                                <View style={[styles.specAnswer, selectedAnswer.specialistTask.correctAnswer === 'C' && styles.correct]}><Text>{selectedAnswer.specialistTask.answerC}</Text></View>
+                                <View style={[
+                                    styles.specAnswer,
+                                    selectedAnswer.specialistTask.correctAnswer === 'A' && styles.correct,
+                                    selectedAnswer.specialistTask.correctAnswer !== 'A' && selectedAnswer.selectedAnswer === 'A' && styles.selectedAnswer
+                                ]}><Text>{selectedAnswer.specialistTask.answerA}</Text></View>
+                                <View style={[
+                                    styles.specAnswer,
+                                    selectedAnswer.specialistTask.correctAnswer === 'B' && styles.correct,
+                                    selectedAnswer.specialistTask.correctAnswer !== 'B' && selectedAnswer.selectedAnswer === 'B' && styles.selectedAnswer
+                                ]}><Text>{selectedAnswer.specialistTask.answerB}</Text></View>
+                                <View style={[
+                                    styles.specAnswer,
+                                    selectedAnswer.specialistTask.correctAnswer === 'C' && styles.correct,
+                                    selectedAnswer.specialistTask.correctAnswer !== 'B' && selectedAnswer.selectedAnswer === 'C' && styles.selectedAnswer
+                                ]}><Text>{selectedAnswer.specialistTask.answerC}</Text></View>
                             </View>
                         </View>
                     </View>
@@ -218,6 +240,9 @@ const styles = StyleSheet.create({
     },
     correct: {
         backgroundColor: "#45ac1d",
+    },
+    selectedAnswer:{
+        backgroundColor: "#858585",
     },
     modal: {
         backgroundColor: "#fff",
@@ -298,5 +323,14 @@ const styles = StyleSheet.create({
     videoBox: {
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    returnButton: {
+        marginTop: 50,
+        marginLeft: '10%',
+        backgroundColor: "#dddddd",
+        width: '80%',
+        alignItems: "center",
+        padding: 15,
+        borderRadius: 20,
     },
 });

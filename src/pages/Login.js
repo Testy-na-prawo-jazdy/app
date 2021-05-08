@@ -1,7 +1,18 @@
 import React from 'react';
-import {StyleSheet, View, Image, TouchableOpacity, Text, TextInput, CheckBox, Modal, AsyncStorage} from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Image,
+    TouchableOpacity,
+    Text,
+    TextInput,
+    CheckBox,
+    Modal,
+    AsyncStorage,
+    ScrollView, SafeAreaView
+} from 'react-native';
 import {Link} from "react-router-native";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {rgbaColor} from "react-native-reanimated/src/reanimated2/Colors";
 import {userLogin} from "../helpers/RestQueries";
 
@@ -38,7 +49,10 @@ export default function Login() {
                 <View style={styles.checkboxContainer}>
                     <CheckBox
                         value={isSelected}
-                        onValueChange={() => {setSelection(!isSelected); AsyncStorage.setItem('remember', isSelected ? 'true' : 'false')}}
+                        onValueChange={() => {
+                            setSelection(!isSelected);
+                            AsyncStorage.setItem('remember', isSelected ? 'true' : 'false')
+                        }}
                         style={styles.checkbox}
                     />
                     <Text style={styles.label}>Zapamiętaj mnie</Text>
@@ -48,7 +62,9 @@ export default function Login() {
             <View style={styles.buttonBox}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => {userLogin(login, password, history)}}
+                    onPress={() => {
+                        userLogin(login, password, history)
+                    }}
                 >
                     <Text>Zaloguj</Text>
                 </TouchableOpacity>
@@ -58,7 +74,10 @@ export default function Login() {
 
                 <TouchableOpacity
                     style={styles.buttonGuest}
-                    onPress={() =>{AsyncStorage.setItem('logIn', 'TemporaryUser'); history.push('/')}}
+                    onPress={() => {
+                        AsyncStorage.setItem('logIn', 'TemporaryUser');
+                        history.push('/')
+                    }}
                 >
                     <Text>Zaloguj jako gość</Text>
                 </TouchableOpacity>
@@ -156,7 +175,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: rgbaColor(0,0,0, 0.5),
+        backgroundColor: rgbaColor(0, 0, 0, 0.5),
     },
     modalView: {
         backgroundColor: "white",
