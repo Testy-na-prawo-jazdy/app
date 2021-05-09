@@ -19,6 +19,7 @@ import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import ProgressCircle from 'react-native-progress-circle'
 import {checkUserSignedIn} from "../helpers/RestQueries";
 import {useHistory} from "react-router-dom";
+import ImageVideo from "../components/ImageVideo";
 
 const win = Dimensions.get('window');
 
@@ -122,73 +123,27 @@ export default function Result(data) {
                     </View>
                     {selectedAnswer.primaryTask &&
                     <View>
-                        {selectedAnswer.primaryTask.filename.includes('.jpg') ?
-                            <Image
-                                style={styles.image}
-                                source={{uri: 'https://poznaj-testy.hekko24.pl/pytania/' + selectedAnswer.primaryTask.filename}}
-                            />
-                            :
-                            <View style={styles.videoBox}>
-                                <Video
-                                    ref={video}
-                                    style={styles.video}
-                                    source={{
-                                        uri: 'https://poznaj-testy.hekko24.pl/pytania/' + selectedAnswer.primaryTask.filename,
-                                    }}
-                                    resizeMode="contain"
-                                    onPlaybackStatusUpdate={status => setStatus(() => status)}
-                                />
-                                {!status.isPlaying && status.positionMillis !== status.playableDurationMillis &&
-                                <TouchableOpacity
-                                    style={[styles.playButton, {display: status.isPlaying ? 'none' : 'flex'}]}
-                                    onPress={() =>
-                                        status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-                                    }
-                                ><FontAwesomeIcon icon={faPlay} style={styles.iconMain} size={30}/></TouchableOpacity>
-                                }
-                            </View>
-                        }
+                        <ImageVideo url={selectedAnswer.primaryTask.filename}/>
                         <View style={styles.testContainer}>
                             <Text style={styles.question}>{selectedAnswer.primaryTask.question}</Text>
                             <View style={styles.answersSpec}>
                                 <View style={[
                                     styles.specAnswer,
                                     selectedAnswer.primaryTask.correctAnswer && styles.correct,
-                                    !selectedAnswer.primaryTask.correctAnswer && selectedAnswer.selectedAnswer && styles.selectedAnswer,
+                                    !selectedAnswer.primaryTask.correctAnswer && selectedAnswer.selectedAnswer === 'true' && styles.selectedAnswer,
                                 ]}><Text>Tak</Text></View>
-                                <View style={[styles.specAnswer, !selectedAnswer.primaryTask.correctAnswer && styles.correct]}><Text>Nie</Text></View>
+                                <View style={[
+                                    styles.specAnswer,
+                                    !selectedAnswer.primaryTask.correctAnswer && styles.correct,
+                                    selectedAnswer.primaryTask.correctAnswer && selectedAnswer.selectedAnswer === 'false' && styles.selectedAnswer,
+                                ]}><Text>Nie</Text></View>
                             </View>
                         </View>
                     </View>
                     }
                     {selectedAnswer.specialistTask &&
                     <View>
-                        {selectedAnswer.specialistTask.filename.includes('.jpg') ?
-                            <Image
-                                style={styles.image}
-                                source={{uri: 'https://poznaj-testy.hekko24.pl/pytania/' + selectedAnswer.specialistTask.filename}}
-                            />
-                            :
-                            <View style={styles.videoBox}>
-                                <Video
-                                    ref={video}
-                                    style={styles.video}
-                                    source={{
-                                        uri: 'https://poznaj-testy.hekko24.pl/pytania/' + selectedAnswer.specialistTask.filename,
-                                    }}
-                                    resizeMode="contain"
-                                    onPlaybackStatusUpdate={status => setStatus(() => status)}
-                                />
-                                {!status.isPlaying && status.positionMillis !== status.playableDurationMillis &&
-                                <TouchableOpacity
-                                    style={[styles.playButton, {display: status.isPlaying ? 'none' : 'flex'}]}
-                                    onPress={() =>
-                                        status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-                                    }
-                                ><FontAwesomeIcon icon={faPlay} style={styles.iconMain} size={30}/></TouchableOpacity>
-                                }
-                            </View>
-                        }
+                        <ImageVideo url={selectedAnswer.specialistTask.filename}/>
                         <View style={styles.testContainer}>
                             <Text style={styles.question}>{selectedAnswer.specialistTask.question}</Text>
                             <View style={styles.answersSpec}>

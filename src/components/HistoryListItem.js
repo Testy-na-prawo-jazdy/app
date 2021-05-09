@@ -10,19 +10,23 @@ export default function HistoryListItem(props) {
     const history = useHistory();
 
     return (
-        <TouchableOpacity style={styles.container} onPress={() => {getHistoryById(props.data.examId, history)}}>
-            <Text style={styles.category}>{props.data.category}</Text>
-            <View style={styles.results}>
-                <Text style={styles.result}>Wynik: {props.data.score}</Text>
-                <Text style={styles.date}>{new Date(props.data.date).toISOString().slice(0, 10)}</Text>
-            </View>
-            <Icon name="chevron-right" style={styles.icon} size={30} color={"#262626"}/>
-        </TouchableOpacity>
+        <View>
+            <TouchableOpacity style={styles.container} onPress={() => {
+                getHistoryById(props.data.examId, history)
+            }}>
+                <Text style={styles.category}>{props.data.category}</Text>
+                <View style={styles.results}>
+                    <Text style={styles.result}>Wynik: {props.data.score}</Text>
+                    <Text style={styles.date}>{new Date(props.data.date).toISOString().slice(0, 10)}</Text>
+                </View>
+                <Icon name="chevron-right" style={styles.icon} size={30} color={"#262626"}/>
+            </TouchableOpacity>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         width: win.width * 0.8,
         borderWidth: 1,
         borderColor: '#707070',
@@ -32,21 +36,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    category:{
+    category: {
         fontSize: 36,
         fontWeight: "800",
         width: 70,
     },
-    results:{
+    results: {
         width: win.width * 0.45,
     },
-    icon:{
+    icon: {
         marginLeft: 10,
     },
-    result:{
+    result: {
         fontSize: 22,
     },
-    date:{
+    date: {
         fontSize: 12,
         color: '#474747'
     },

@@ -73,7 +73,7 @@ export const refreshToken = async () => {
             .then((responseData) => {
                 console.log(responseData)
                 if (responseData.errorCode) {
-
+                    console.log(responseData)
                 } else {
                     AsyncStorage.setItem('token', responseData.token)
                     AsyncStorage.setItem('createdAt', new Date().toISOString())
