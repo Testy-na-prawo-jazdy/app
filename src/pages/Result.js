@@ -40,13 +40,11 @@ export default function Result(data) {
                 pointsCounter += result.primaryTask.points;
             }
         })
-
         results.specialistTaskList.map((result) => {
             if (result.correct) {
                 pointsCounter += result.specialistTask.points;
             }
         })
-
         setPoints(pointsCounter)
     });
 

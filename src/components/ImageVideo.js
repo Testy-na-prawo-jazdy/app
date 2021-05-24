@@ -14,31 +14,38 @@ export default function ImageVideo({url}) {
     return (
         <View>
             <View>
-                {url.includes('.jpg') ?
-                    <Image
-                        style={styles.image}
-                        source={{uri: 'https://poznaj-testy.hekko24.pl/pytania/' + url}}
+                {!url &&
+                <Image
+                    source={require('../assets/images/no-image.png')}
+                    style={styles.noImage}
+                />
+                }
+                {url.includes('.jpg') &&
+                <Image
+                    source={{
+                        uri: 'http://poznaj-testy.hekko24.pl/pytania/' + url,
+                    }}
+                    style={styles.image}
+                />
+                }
+                {url.includes('.mp4') &&
+                <View style={styles.videoBox}>
+                    <Video
+                        source={{uri: 'http://poznaj-testy.hekko24.pl/pytania/' + url}}
+                        ref={video}
+                        style={styles.video}
+                        resizeMode="contain"
+                        onPlaybackStatusUpdate={status => setStatus(() => status)}
                     />
-                    :
-                    <View style={styles.videoBox}>
-                        <Video
-                            ref={video}
-                            style={styles.video}
-                            source={{
-                                uri: 'https://poznaj-testy.hekko24.pl/pytania/' + url,
-                            }}
-                            resizeMode="contain"
-                            onPlaybackStatusUpdate={status => setStatus(() => status)}
-                        />
-                        {!status.isPlaying && status.positionMillis !== status.playableDurationMillis &&
-                        <TouchableOpacity
-                            style={[styles.playButton, {display: status.isPlaying ? 'none' : 'flex'}]}
-                            onPress={() =>
-                                status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
-                            }
-                        ><FontAwesomeIcon icon={faPlay} style={styles.iconMain} size={30}/></TouchableOpacity>
+                    {!status.isPlaying && status.positionMillis !== status.playableDurationMillis &&
+                    <TouchableOpacity
+                        style={[styles.playButton, {display: status.isPlaying ? 'none' : 'flex'}]}
+                        onPress={() =>
+                            status.isPlaying ? video.current.pauseAsync() : video.current.playAsync()
                         }
-                    </View>
+                    ><FontAwesomeIcon icon={faPlay} style={styles.iconMain} size={30}/></TouchableOpacity>
+                    }
+                </View>
                 }
             </View>
         </View>
@@ -49,6 +56,13 @@ const styles = StyleSheet.create({
     image: {
         width: win.width,
         height: 242,
+    },
+    noImage: {
+        width: win.width,
+        height: 222,
+        resizeMode: 'contain',
+        marginTop: 10,
+        marginBottom: 10,
     },
     video: {
         width: win.width,

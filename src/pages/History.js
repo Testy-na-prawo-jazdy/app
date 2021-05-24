@@ -12,7 +12,9 @@ export default function History() {
 
     useEffect(() => {
         getHistory().then((response) => {
-            setUserHistory(response)
+            setUserHistory(response.sort((a, b) => {
+                return new Date(b.date) - new Date(a.date); // descending
+            }))
         })
     }, []);
 

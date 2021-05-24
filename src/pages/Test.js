@@ -6,7 +6,7 @@ import NavBar from "../components/NavBar";
 import {Dimensions} from 'react-native';
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
-import {completeTest} from "../helpers/RestQueries";
+import {completePrimaryTaskTest, completeSpecialistTaskTest, completeTest} from "../helpers/RestQueries";
 import {useHistory} from "react-router-dom";
 import ImageVideo from "../components/ImageVideo";
 
@@ -23,6 +23,9 @@ export default function Test(data) {
     const [index, setIndex] = React.useState(0);
     const [primaryTaskList, setPrimaryTaskList] = React.useState([]);
     const [specialistTaskList, setSpecialistTaskList] = React.useState([]);
+    const [selected, setSelected] = React.useState('');
+    const [correct, setCorrect] = React.useState('');
+
     let timeout = undefined;
 
     const markAnswer = (id, answer, type) => {
@@ -108,16 +111,102 @@ export default function Test(data) {
                 </View>
             </View>
         )
-    }
+    } else {
+        let standard = exam.primaryTask
+        let specialist = exam.specialistTask
 
-    return (
-        <View style={styles.container}>
-            <NavBar title={"Test"}/>
-            <View>
-                <Text style={styles.text}>Test kategorii: {category}</Text>
+        const answerStandard = (id, value) => {
+            completePrimaryTaskTest(id, value, history)
+            setSelected(value.toString())
+            setCorrect(standard.correctAnswer.toString())
+        }
+
+        const answerSpecialist = (id, value) => {
+            completeSpecialistTaskTest(id, value, history)
+            setSelected(value.toString())
+            setCorrect(specialist.correctAnswer.toString())
+        }
+
+        return (
+            <View style={styles.container}>
+                <NavBar title={'Test'}/>
+                <View>
+                    {standard &&
+                    <View>
+                        <ImageVideo url={standard.filename}/>
+                        <View style={styles.testContainer}>
+                            <Text
+                                style={styles.testNumber}>Pytanie 1 z 1</Text>
+                            <Text style={styles.question}>{standard.question}</Text>
+                            <View style={styles.answers}>
+                                <TouchableOpacity style={[
+                                    selected === 'true' ? styles.selected : styles.trueAnswer,
+                                    correct === 'true' && styles.correct
+                                ]} onPress={() => {
+                                    if (selected === '') {
+                                        answerStandard(exam.id, true)
+                                    }
+                                }}><Text>Tak</Text></TouchableOpacity>
+                                <TouchableOpacity style={[
+                                    selected === 'false' ? styles.selectedFalse : styles.falseAnswer,
+                                    correct === 'false' && styles.correctFalse
+                                ]} onPress={() => {
+                                    if (selected === '') {
+                                        answerStandard(exam.id, false)
+                                    }
+                                }}><Text>Nie</Text></TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                    }
+                    {specialist &&
+                    <View>
+                        <ImageVideo url={specialist.filename}/>
+                        <View style={styles.testContainer}>
+                            <Text
+                                style={styles.testNumber}>Pytanie 1 z 1</Text>
+                            <Text
+                                style={styles.question}>{specialist.question}</Text>
+                            <View style={styles.answersSpec}>
+                                <TouchableOpacity style={[
+                                    selected === 'A' ? styles.specAnswerSelected : styles.specAnswer,
+                                    correct === 'A' && styles.specAnswerTrue
+                                ]} onPress={() => {
+                                    if (selected === '') {
+                                        answerSpecialist(exam.id, 'A')
+                                    }
+                                }}><Text>{specialist.answerA}</Text></TouchableOpacity>
+                                <TouchableOpacity style={[
+                                    selected === 'B' ? styles.specAnswerSelected : styles.specAnswer,
+                                    correct === 'B' && styles.specAnswerTrue
+                                ]} onPress={() => {
+                                    if (selected === '') {
+                                        answerSpecialist(exam.id, 'B')
+                                    }
+                                }}><Text>{specialist.answerB}</Text></TouchableOpacity>
+                                <TouchableOpacity style={[
+                                    selected === 'C' ? styles.specAnswerSelected : styles.specAnswer,
+                                    correct === 'C' && styles.specAnswerTrue
+                                ]} onPress={() => {
+                                    if (selected === '') {
+                                        answerSpecialist(exam.id, 'C')
+                                    }
+                                }}><Text>{specialist.answerC}</Text></TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                    }
+                </View>
+                {selected !== '' &&
+                <TouchableOpacity style={styles.returnButton} onPress={() => {
+                    history.push('/')
+                }}>
+                    <Text>Wróć</Text>
+                </TouchableOpacity>
+                }
             </View>
-        </View>
-    )
+        )
+    }
 }
 
 const styles = StyleSheet.create({
@@ -129,8 +218,8 @@ const styles = StyleSheet.create({
         fontSize: 22
     },
     question: {
-        fontSize: 19,
-        height: 120,
+        fontSize: 16,
+        height: 90,
     },
     testContainer: {
         padding: 25,
@@ -147,9 +236,27 @@ const styles = StyleSheet.create({
     },
     specAnswer: {
         width: '100%',
-        height: 75,
+        height: 65,
         justifyContent: 'center',
         backgroundColor: "#ff8906",
+        marginTop: 10,
+        paddingLeft: 25,
+        paddingRight: 25,
+    },
+    specAnswerSelected: {
+        width: '100%',
+        height: 65,
+        justifyContent: 'center',
+        backgroundColor: "#858585",
+        marginTop: 10,
+        paddingLeft: 25,
+        paddingRight: 25,
+    },
+    specAnswerTrue: {
+        width: '100%',
+        height: 65,
+        justifyContent: 'center',
+        backgroundColor: "#45ac1d",
         marginTop: 10,
         paddingLeft: 25,
         paddingRight: 25,
@@ -175,5 +282,49 @@ const styles = StyleSheet.create({
     testNumber: {
         fontSize: 16,
         color: '#3e3e3e'
-    }
+    },
+    selected: {
+        width: '50%',
+        height: 75,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
+        backgroundColor: "#858585",
+    },
+    selectedFalse: {
+        width: '50%',
+        height: 75,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+        backgroundColor: "#858585",
+    },
+    correct: {
+        width: '50%',
+        height: 75,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20,
+        backgroundColor: "#45ac1d",
+    },
+    correctFalse: {
+        width: '50%',
+        height: 75,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+        backgroundColor: "#45ac1d",
+    },
+    returnButton: {
+        width: '90%',
+        height: 65,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 20,
+        backgroundColor: "#dddddd",
+    },
 });

@@ -227,6 +227,59 @@ export const completeTest = async (id, primaryTaskList, specialistTaskList, hist
     }
 }
 
+export const completePrimaryTaskTest = async (id, answer, history) => {
+    let time = new Date(await AsyncStorage.getItem('createdAt'))
+    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+        await refreshToken()
+    }
+    let token = await AsyncStorage.getItem('token')
+    if (token) {
+        fetch("https://testy-na-prawo-jazdy.herokuapp.com/learn/primaryTask/finish/" + id, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                id: id,
+                chosenAnswer: answer,
+            })
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                // history.push('/result', {results: responseData})
+            })
+            .done()
+    }
+}
+
+export const completeSpecialistTaskTest = async (id, answer, history) => {
+    let time = new Date(await AsyncStorage.getItem('createdAt'))
+    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+        await refreshToken()
+    }
+    let token = await AsyncStorage.getItem('token')
+    if (token) {
+        fetch("https://testy-na-prawo-jazdy.herokuapp.com/learn/specialistTask/finish/" + id, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                id: id,
+                chosenAnswer: answer,
+            })
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                // history.push('/result', {results: responseData})
+            })
+            .done()
+    }
+}
 
 export const getHistory = async () => {
     let time = new Date(await AsyncStorage.getItem('createdAt'))

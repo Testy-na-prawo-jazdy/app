@@ -17,7 +17,8 @@ export default function HistoryListItem(props) {
                 <Text style={styles.category}>{props.data.category}</Text>
                 <View style={styles.results}>
                     <Text style={styles.result}>Wynik: {props.data.score}</Text>
-                    <Text style={styles.date}>{new Date(props.data.date).toISOString().slice(0, 10)}</Text>
+                    <Text
+                        style={styles.date}>{new Date(props.data.date).toISOString().slice(0, 10) + ' ' + new Date(props.data.date).toTimeString().split(' ')[0]}</Text>
                 </View>
                 <Icon name="chevron-right" style={styles.icon} size={30} color={"#262626"}/>
             </TouchableOpacity>
