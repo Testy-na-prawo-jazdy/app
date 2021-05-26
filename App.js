@@ -1,7 +1,7 @@
 import React, {useEffect } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {NativeRouter, Route, Link, Redirect} from "react-router-native";
-import {checkUserSignedIn} from "./src/helpers/RestQueries";
+import {checkUserSignedIn, userLogOut} from "./src/helpers/RestQueries";
 import Login from "./src/pages/Login";
 import Register from "./src/pages/Register";
 import Home from "./src/pages/Home";
@@ -17,6 +17,9 @@ export default function App() {
 
     useEffect(() => {
         checkUserSignedIn().then((value) => setAuthentication(value))
+        if(!isAuthenticated){
+            userLogOut()
+        }
     });
 
     return (

@@ -36,60 +36,60 @@ export default function Register() {
     }
 
     return (
-                <View style={styles.container}>
-                    <Image
-                        style={styles.logo}
-                        resizeMode={"contain"}
-                        source={require('../assets/images/logo.png')}
-                    />
-                    <Text style={styles.textHeader}>Zarejestruj się</Text>
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={onChangeLogin}
-                        value={login}
-                        placeholder={"Login"}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={onChangeEmail}
-                        value={email}
-                        placeholder={"Email"}
-                        autoCompleteType={"email"}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={onChangePassword}
-                        secureTextEntry={true}
-                        value={password}
-                        placeholder={"Hasło"}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        onChangeText={onChangeRepeatPassword}
-                        secureTextEntry={true}
-                        value={repeatPassword}
-                        placeholder={"Powtórz hasło"}
-                    />
-                    <View style={styles.buttonBox}>
-                        <TouchableOpacity style={styles.button} onPress={() => {
-                            formValidation() && userRegister(login, password, email, history)
-                        }}>
-                            <Text>Zarejestruj</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.returnButton} onPress={() => {
-                            history.push('/login')
-                        }}>
-                            <Text>Wróć</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+        <ScrollView contentContainerStyle={styles.container}>
+            <Image
+                style={styles.logo}
+                resizeMode={"contain"}
+                source={require('../assets/images/logo.png')}
+            />
+            <Text style={styles.textHeader}>Zarejestruj się</Text>
+            <TextInput
+                style={styles.input}
+                onChangeText={onChangeLogin}
+                value={login}
+                placeholder={"Login"}
+            />
+            <TextInput
+                style={styles.input}
+                onChangeText={onChangeEmail}
+                value={email}
+                placeholder={"Email"}
+                autoCompleteType={"email"}
+            />
+            <TextInput
+                style={styles.input}
+                onChangeText={onChangePassword}
+                secureTextEntry={true}
+                value={password}
+                placeholder={"Hasło"}
+            />
+            <TextInput
+                style={styles.input}
+                onChangeText={onChangeRepeatPassword}
+                secureTextEntry={true}
+                value={repeatPassword}
+                placeholder={"Powtórz hasło"}
+            />
+            <View style={styles.buttonBox}>
+                <TouchableOpacity style={styles.button} onPress={() => {
+                    formValidation() && userRegister(login, password, email, history)
+                }}>
+                    <Text>Zarejestruj</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.returnButton} onPress={() => {
+                    history.push('/login')
+                }}>
+                    <Text>Wróć</Text>
+                </TouchableOpacity>
+            </View>
+        </ScrollView>
     );
 }
 
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
+        flexGrow: 1,
         alignItems: 'center',
     },
     logo: {

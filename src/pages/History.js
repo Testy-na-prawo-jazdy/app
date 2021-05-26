@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View, ScrollView, SafeAreaView, Dimensions} from 'react-native';
+import {StyleSheet, View, ScrollView, SafeAreaView, Dimensions, Text} from 'react-native';
 import NavBar from "../components/NavBar";
 import HistoryListItem from "../components/HistoryListItem";
 import {checkUserSignedIn, getHistory} from "../helpers/RestQueries";
@@ -21,13 +21,25 @@ export default function History() {
     return (
         <View style={styles.container}>
             <NavBar title={"Historia"}/>
-                <ScrollView style={{marginTop: 30, height: win.height * 0.85, width: win.width, marginLeft: win.width * 0.2}} >
+            {
+                userHistory.length !== 0 &&
+                <ScrollView style={{
+                    marginTop: 30,
+                    height: win.height * 0.85,
+                    width: win.width,
+                    marginLeft: win.width * 0.2,
+                }}>
                     {
                         userHistory.map((item) => {
                             return <HistoryListItem key={item.examId} data={item}/>
                         })
                     }
                 </ScrollView>
+            }
+            {
+                userHistory.length === 0 &&
+                <Text style={styles.text}>Brak zapisów w historii</Text>
+            }
         </View>
     )
 }
@@ -38,6 +50,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     text: {
+        marginTop: 30,
         fontSize: 22
     }
 });

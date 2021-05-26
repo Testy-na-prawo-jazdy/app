@@ -127,13 +127,13 @@ export const checkUserSignedIn = async () => {
     }
 }
 
-export const primaryTask = async (category, history) =>{
+export const primaryTask = async (category, history) => {
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
-    if(token){
+    if (token) {
         fetch("https://testy-na-prawo-jazdy.herokuapp.com/learn/primaryTask/start/" + category, {
             method: "POST",
             headers: {
@@ -151,13 +151,13 @@ export const primaryTask = async (category, history) =>{
 
 }
 
-export const specialistTask = async (category, history) =>{
+export const specialistTask = async (category, history) => {
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
-    if(token){
+    if (token) {
         fetch("https://testy-na-prawo-jazdy.herokuapp.com/learn/specialistTask/start/" + category, {
             method: "POST",
             headers: {
@@ -175,13 +175,13 @@ export const specialistTask = async (category, history) =>{
 
 }
 
-export const fullTest = async (category, history) =>{
+export const fullTest = async (category, history) => {
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
-    if(token){
+    if (token) {
         fetch("https://testy-na-prawo-jazdy.herokuapp.com/exam/start/" + category, {
             method: "POST",
             headers: {
@@ -201,7 +201,7 @@ export const fullTest = async (category, history) =>{
 
 export const completeTest = async (id, primaryTaskList, specialistTaskList, history) => {
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
@@ -229,7 +229,7 @@ export const completeTest = async (id, primaryTaskList, specialistTaskList, hist
 
 export const completePrimaryTaskTest = async (id, answer, history) => {
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
@@ -256,7 +256,7 @@ export const completePrimaryTaskTest = async (id, answer, history) => {
 
 export const completeSpecialistTaskTest = async (id, answer, history) => {
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
@@ -283,7 +283,7 @@ export const completeSpecialistTaskTest = async (id, answer, history) => {
 
 export const getHistory = async () => {
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
@@ -302,7 +302,7 @@ export const getHistory = async () => {
 
 export const getHistoryById = async (id, history) => {
     let time = new Date(await AsyncStorage.getItem('createdAt'))
-    if(new Date() > new Date(time.setMinutes(time.getMinutes()+30))){
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
         await refreshToken()
     }
     let token = await AsyncStorage.getItem('token')
@@ -323,3 +323,46 @@ export const getHistoryById = async (id, history) => {
     }
 }
 
+export const changePassword = async (oldPassword, newPassword) => {
+    let time = new Date(await AsyncStorage.getItem('createdAt'))
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
+        await refreshToken()
+    }
+    let token = await AsyncStorage.getItem('token')
+    if (token) {
+        fetch("https://testy-na-prawo-jazdy.herokuapp.com/auth/changePassword", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                oldPassword: oldPassword,
+                newPassword: newPassword,
+            })
+        }).done()
+    }
+}
+
+export const changeEmail = async (newEmail, password) => {
+    let time = new Date(await AsyncStorage.getItem('createdAt'))
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
+        await refreshToken()
+    }
+    let token = await AsyncStorage.getItem('token')
+    if (token) {
+        fetch("https://testy-na-prawo-jazdy.herokuapp.com/auth/changeEmail", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                password: password,
+                newEmail: newEmail,
+            })
+        }).done()
+    }
+}
