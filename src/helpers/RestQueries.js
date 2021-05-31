@@ -366,3 +366,24 @@ export const changeEmail = async (newEmail, password) => {
         }).done()
     }
 }
+
+export const getStatistics = async () => {
+    let time = new Date(await AsyncStorage.getItem('createdAt'))
+    if (new Date() > new Date(time.setMinutes(time.getMinutes() + 30))) {
+        await refreshToken()
+    }
+    let token = await AsyncStorage.getItem('token')
+    if (token) {
+        let response = await fetch("https://testy-na-prawo-jazdy.herokuapp.com/exam/statistics", {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        });
+        return await response.json();
+    }
+
+
+}

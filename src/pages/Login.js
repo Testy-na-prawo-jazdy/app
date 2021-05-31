@@ -75,8 +75,7 @@ export default function Login() {
                 <TouchableOpacity
                     style={styles.buttonGuest}
                     onPress={() => {
-                        AsyncStorage.setItem('logIn', 'TemporaryUser');
-                        history.push('/')
+                        userLogin('DEMO', 'DEMO123', history)
                     }}
                 >
                     <Text>Zaloguj jako gość</Text>
