@@ -5,7 +5,7 @@ Dane do testów pochodzą z udostępnionych materiałów przez [Ministerstwo Inf
 
 ## Podgląd 
 
-Prezentacja: [YotuTube](https://www.youtube.com/watch?v=qI9VOXJRMzk)
+Prezentacja: [YouTube](https://www.youtube.com/watch?v=qI9VOXJRMzk)
 
 ## Technologie
 
